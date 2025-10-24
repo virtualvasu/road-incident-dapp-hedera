@@ -34,7 +34,7 @@ A decentralized incident reporting platform with blockchain-based record keeping
 ### 1. Clone Repository
 ```bash
 git clone <repository-url>
-cd self-road-report-celo
+cd road-incident-dapp-hedera
 ```
 
 ### 2. Deploy Contracts

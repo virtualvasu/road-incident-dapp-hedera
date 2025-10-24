@@ -24,7 +24,7 @@ export default function LandingPage({ onReportIncident, onViewDashboard }: Landi
             <div className="flex items-center justify-center space-x-2">
               <span className="text-sm text-gray-500">Powered by</span>
               <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                Celo
+                Hedera
               </span>
             </div>
           </div>
@@ -171,7 +171,7 @@ export default function LandingPage({ onReportIncident, onViewDashboard }: Landi
             <div>© 2025 Incident Management System - Secure • Decentralized • Professional</div>
             <div className="flex items-center space-x-2">
               <span>Powered by</span>
-              <span className="font-semibold text-blue-600">Celo Network</span>
+              <span className="font-semibold text-blue-600">Hedera Network</span>
             </div>
           </div>
         </div>

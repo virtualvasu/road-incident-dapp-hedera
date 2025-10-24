@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Deploy Incident Manager Contract Script
-# For deploying the IncidentManager contract to Hedera and Celo networks
+# For deploying the IncidentManager contract to Hedera networks
 
 set -e  # Exit on error
 
@@ -46,18 +46,6 @@ NETWORK=${NETWORK:-"hedera-testnet"}
 
 # Network configuration
 case "$NETWORK" in
-    "celo-mainnet")
-        RPC_URL="https://forno.celo.org"
-        NETWORK_NAME="celo-mainnet"
-        CHAIN_ID="42220"
-        BLOCK_EXPLORER_URL="https://celoscan.io"
-        ;;
-    "celo-sepolia")
-        RPC_URL="https://forno.celo-sepolia.celo-testnet.org"
-        NETWORK_NAME="celo-sepolia"
-        CHAIN_ID="11142220"
-        BLOCK_EXPLORER_URL="https://celo-sepolia.blockscout.com"
-        ;;
     "hedera-testnet")
         RPC_URL="https://testnet.hashio.io/api"
         NETWORK_NAME="hedera-testnet"
@@ -71,7 +59,7 @@ case "$NETWORK" in
         BLOCK_EXPLORER_URL="https://hashscan.io/mainnet"
         ;;
     *)
-        print_error "Unsupported network: $NETWORK. Use 'celo-mainnet', 'celo-sepolia', 'hedera-testnet', or 'hedera-mainnet'"
+        print_error "Unsupported network: $NETWORK. Use 'hedera-testnet' or 'hedera-mainnet'"
         exit 1
         ;;
 esac
@@ -129,12 +117,6 @@ if [ -n "$HEDERA_API_KEY" ]; then
     
     # Determine chain name for forge verify-contract
     case "$NETWORK" in
-        "celo-mainnet")
-            CHAIN_NAME="celo"
-            ;;
-        "celo-sepolia")
-            CHAIN_NAME="celo-sepolia"
-            ;;
         "hedera-testnet")
             CHAIN_NAME="hedera-testnet"
             ;;
