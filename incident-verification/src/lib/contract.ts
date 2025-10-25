@@ -2,15 +2,32 @@
 // This file contains the contract address and ABI for the IncidentManager contract
 
 // Contract deployed on Hedera Testnet (Chain ID: 296)
-// Deployment: 2024-10-24
-// Explorer: https://hashscan.io/testnet/address/0xf12ead27305b91a03afbb413a2ed2f028e4c9e6b
-export const INCIDENT_MANAGER_ADDRESS = "0xf12ead27305b91a03afbb413a2ed2f028e4c9e6b";
+// Deployment: 2025-10-25 (Updated with improved verification logic)
+// Explorer: https://hashscan.io/testnet/address/0xeEEFe607e5f4649cE99E4eaa9CDa1cDDE32Ee168
+export const INCIDENT_MANAGER_ADDRESS = "0xeEEFe607e5f4649cE99E4eaa9CDa1cDDE32Ee168";
 
 export const INCIDENT_MANAGER_ABI = [
     {
         "type": "constructor",
         "inputs": [],
         "stateMutability": "nonpayable"
+    },
+    {
+        "type": "receive",
+        "stateMutability": "payable"
+    },
+    {
+        "type": "function",
+        "name": "getContractBalance",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "view"
     },
     {
         "type": "function",
@@ -144,6 +161,51 @@ export const INCIDENT_MANAGER_ABI = [
     },
     {
         "type": "function",
+        "name": "rewardAmount",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "rewardClaimed",
+        "inputs": [
+            {
+                "name": "",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool",
+                "internalType": "bool"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "setRewardAmount",
+        "inputs": [
+            {
+                "name": "_amount",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
         "name": "verifyIncident",
         "inputs": [
             {
@@ -152,6 +214,13 @@ export const INCIDENT_MANAGER_ABI = [
                 "internalType": "uint256"
             }
         ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "withdrawFunds",
+        "inputs": [],
         "outputs": [],
         "stateMutability": "nonpayable"
     },
@@ -201,6 +270,31 @@ export const INCIDENT_MANAGER_ABI = [
                 "type": "address",
                 "indexed": false,
                 "internalType": "address"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "RewardPaid",
+        "inputs": [
+            {
+                "name": "incidentId",
+                "type": "uint256",
+                "indexed": true,
+                "internalType": "uint256"
+            },
+            {
+                "name": "reporter",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
             }
         ],
         "anonymous": false

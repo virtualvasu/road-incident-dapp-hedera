@@ -5,6 +5,12 @@ contract IncidentManager {
 
     // Contract owner (deployer)
     address public owner;
+    
+    // Reward amount for verified incidents
+    uint256 public rewardAmount = 0.05 ether; // 0.05 Hedera (testnet)
+    
+    // Track if reward has been claimed for each incident
+    mapping(uint256 => bool) public rewardClaimed;
 
     // Struct to store incident data
     struct Incident {
@@ -24,6 +30,8 @@ contract IncidentManager {
     event IncidentReported(uint id, string description, address reportedBy, uint256 timestamp);
     // Event to log incident verification
     event IncidentVerified(uint id, address verifiedBy);
+    // Event to log reward payments
+    event RewardPaid(uint indexed incidentId, address indexed reporter, uint256 amount);
 
     // Modifier to restrict access to owner only
     modifier onlyOwner() {
@@ -60,13 +68,43 @@ contract IncidentManager {
     function verifyIncident(uint _id) public onlyOwner {
         require(_id > 0 && _id <= incidentCounter, "Invalid incident ID");
         require(!incidents[_id].verified, "Incident is already verified");
+        require(!rewardClaimed[_id], "Reward already claimed");
         
         incidents[_id].verified = true;
+        rewardClaimed[_id] = true;
+        
+        // Try to send reward to reporter, but don't fail if balance is insufficient
+        address reporter = incidents[_id].reportedBy;
+        if (address(this).balance >= rewardAmount) {
+            (bool success, ) = payable(reporter).call{value: rewardAmount}("");
+            if (success) {
+                emit RewardPaid(_id, reporter, rewardAmount);
+            }
+        }
+        
         emit IncidentVerified(_id, msg.sender);
     }
 
     // Function to fetch the last incident's ID number
     function getLastIncidentId() public view returns (uint) {
         return incidentCounter;
+    }
+    
+    // Allow owner to deposit hedera for rewards
+    receive() external payable {}
+    
+    // Function to set reward amount (only owner)
+    function setRewardAmount(uint256 _amount) public onlyOwner {
+        rewardAmount = _amount;
+    }
+    
+    // Function to withdraw funds (only owner)
+    function withdrawFunds() public onlyOwner {
+        payable(owner).transfer(address(this).balance);
+    }
+    
+    // Function to get contract balance
+    function getContractBalance() public view returns (uint256) {
+        return address(this).balance;
     }
 }
