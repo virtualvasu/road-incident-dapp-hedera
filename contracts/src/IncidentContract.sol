@@ -12,6 +12,7 @@ contract IncidentManager {
     // Track if reward has been claimed for each incident
     mapping(uint256 => bool) public rewardClaimed;
 
+
     // Struct to store incident data
     struct Incident {
         uint id;

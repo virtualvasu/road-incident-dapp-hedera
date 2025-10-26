@@ -2,9 +2,9 @@
 // This file contains the contract address and ABI for the IncidentManager contract
 
 // Contract deployed on Hedera Testnet (Chain ID: 296)
-// Deployment: 2025-10-25 (Updated with improved verification logic)
-// Explorer: https://hashscan.io/testnet/address/0xeEEFe607e5f4649cE99E4eaa9CDa1cDDE32Ee168
-export const INCIDENT_MANAGER_ADDRESS = "0xeEEFe607e5f4649cE99E4eaa9CDa1cDDE32Ee168";
+// Deployment: 2025-10-26 (Latest deployment with Solidity 0.8.28)
+// Explorer: https://hashscan.io/testnet/address/0x07Bc74258668113A0116ac51FB3053108a633DaD
+export const INCIDENT_MANAGER_ADDRESS = "0x07Bc74258668113A0116ac51FB3053108a633DaD";
 
 export const INCIDENT_MANAGER_ABI = [
     {
