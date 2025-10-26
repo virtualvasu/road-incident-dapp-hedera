@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Wallet, TrendingUp, Award, ArrowLeft, RefreshCw, DollarSign, Calendar, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import { INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI } from '../lib/contract';
+import { ensureCorrectNetwork, DEFAULT_NETWORK } from '../lib/network';
 
 declare global {
   interface Window {
@@ -54,6 +55,14 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
     setIsConnectingWallet(true);
     setError('');
     try {
+      // First ensure user is on the correct network
+      const networkSwitched = await ensureCorrectNetwork();
+      if (!networkSwitched) {
+        setError(`Please switch to ${DEFAULT_NETWORK.name} (Chain ID: ${DEFAULT_NETWORK.chainId}) in MetaMask`);
+        setIsConnectingWallet(false);
+        return;
+      }
+
       const browserProvider = new ethers.BrowserProvider(window.ethereum);
       const accounts = await browserProvider.send("eth_requestAccounts", []);
       const signer = await browserProvider.getSigner();
@@ -64,7 +73,7 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
       setWalletConnected(true);
     } catch (error) {
       console.error('Wallet connection error:', error);
-      setError("Failed to connect wallet. Please try again.");
+      setError("Failed to connect wallet. Please try again and ensure you're on Hedera Testnet.");
     } finally {
       setIsConnectingWallet(false);
     }
@@ -77,9 +86,39 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
     setError('');
     
     try {
-      // Get total number of incidents
-      const lastIncidentId = await contract.getLastIncidentId();
-      const totalIncidents = Number(lastIncidentId);
+      // Create a read-only provider for view calls to avoid gas estimation issues
+      const readOnlyProvider = new ethers.JsonRpcProvider(DEFAULT_NETWORK.rpcUrl);
+      const readOnlyContract = new ethers.Contract(INCIDENT_MANAGER_ADDRESS, INCIDENT_MANAGER_ABI, readOnlyProvider);
+
+      // First check if contract has sufficient balance for operations
+      let contractBalance;
+      try {
+        contractBalance = await readOnlyContract.getContractBalance();
+        console.log('Contract Balance:', contractBalance.toString());
+      } catch (balanceError) {
+        console.error('Error getting contract balance:', balanceError);
+        setError('Unable to connect to contract. Please check your network connection and ensure you are on Hedera Testnet.');
+        setIsLoading(false);
+        return;
+      }
+
+      // Get total number of incidents with retry logic
+      let lastIncidentId;
+      let totalIncidents;
+      try {
+        lastIncidentId = await readOnlyContract.getLastIncidentId();
+        totalIncidents = Number(lastIncidentId);
+      } catch (incidentError) {
+        console.error('Error getting incident count:', incidentError);
+        setError('Failed to fetch incident data. The contract may be experiencing issues or you may not be connected to Hedera Testnet.');
+        setIsLoading(false);
+        return;
+      }
+      
+      console.log('=== DEBUGGING REWARDS ===');
+      console.log('Wallet Address:', walletAddress);
+      console.log('Total Incidents:', totalIncidents);
+      console.log('Contract Balance:', contractBalance.toString());
       
       const userIncidentsList: UserIncident[] = [];
       const rewardedIncidentsList: RewardedIncident[] = [];
@@ -90,8 +129,17 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
       // Check all incidents to find ones reported by this user
       for (let i = 1; i <= totalIncidents; i++) {
         try {
-          const incident = await contract.getIncident(i);
+          const incident = await readOnlyContract.getIncident(i);
           const [id, description, reportedBy, timestamp, isVerified] = incident;
+          
+          console.log(`Incident ${i}:`, {
+            reportedBy: reportedBy,
+            reportedBy_lower: reportedBy.toLowerCase(),
+            walletAddress: walletAddress,
+            walletAddress_lower: walletAddress.toLowerCase(),
+            match: reportedBy.toLowerCase() === walletAddress.toLowerCase(),
+            verified: isVerified
+          });
           
           // Check if this incident was reported by the current user
           if (reportedBy.toLowerCase() === walletAddress.toLowerCase()) {
@@ -107,28 +155,38 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
             
             if (isVerified) {
               verified++;
-              // Get reward amount from contract
-              const rewardAmount = await contract.rewardAmount();
-              // Convert from wei to HBAR (divide by 10^18)
-              const rewardInHbar = (Number(rewardAmount) / 1000000000000000000).toString();
-              totalRewardsSum += Number(rewardInHbar);
-              
-              // Store the current reward amount for display
-              setCurrentRewardAmount(rewardInHbar);
-              
-              rewardedIncidentsList.push({
-                id: Number(id),
-                description,
-                timestamp: new Date(Number(timestamp) * 1000),
-                rewardAmount: rewardInHbar
-              });
+              // Get reward amount from contract (with error handling)
+              try {
+                const rewardAmount = await readOnlyContract.rewardAmount();
+                // Convert from wei to HBAR (divide by 10^18)
+                const rewardInHbar = (Number(rewardAmount) / 1000000000000000000).toString();
+                totalRewardsSum += Number(rewardInHbar);
+                
+                // Store the current reward amount for display
+                setCurrentRewardAmount(rewardInHbar);
+                
+                rewardedIncidentsList.push({
+                  id: Number(id),
+                  description,
+                  timestamp: new Date(Number(timestamp) * 1000),
+                  rewardAmount: rewardInHbar
+                });
+              } catch (rewardError) {
+                console.error('Error getting reward amount:', rewardError);
+                // Continue without reward calculation
+              }
             } else {
               pending++;
             }
           }
         } catch (incidentError) {
           console.error(`Error fetching incident ${i}:`, incidentError);
-          // Continue with next incident
+          // Check if this is a critical error that should stop processing
+          if (incidentError instanceof Error && incidentError.message.includes('INSUFFICIENT_PAYER_BALANCE')) {
+            setError('Contract has insufficient balance for operations. Please contact the contract owner to fund the contract.');
+            break;
+          }
+          // Continue with next incident for other errors
         }
       }
 
@@ -137,6 +195,13 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
       setTotalRewards(totalRewardsSum.toString());
       setVerifiedCount(verified);
       setPendingCount(pending);
+
+      console.log('=== FINAL RESULTS ===');
+      console.log('User Incidents Found:', userIncidentsList.length);
+      console.log('Verified Count:', verified);
+      console.log('Pending Count:', pending);
+      console.log('Total Rewards:', totalRewardsSum);
+      console.log('User Incidents List:', userIncidentsList);
 
     } catch (error) {
       console.error('Error fetching rewards:', error);
@@ -212,9 +277,14 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
                 <Wallet className="w-8 h-8 text-blue-600" />
               </div>
               <h2 className="text-xl font-bold text-gray-900 mb-2">Connect Your Wallet</h2>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-4">
                 Connect your wallet to view your incident rewards and earnings history.
               </p>
+              <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="text-sm text-yellow-800">
+                  <strong>Important:</strong> Make sure you're connected to <strong>Hedera Testnet</strong> (Chain ID: 296) in MetaMask.
+                </p>
+              </div>
               
               {error && (
                 <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -256,7 +326,7 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
                   <div>
                     <h3 className="font-semibold text-gray-900">Wallet Connected</h3>
                     <p className="text-sm text-gray-600">
-                      {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+                      {walletAddress}
                     </p>
                   </div>
                 </div>
