@@ -13,7 +13,7 @@ interface RewardedIncident {
   id: number;
   description: string;
   timestamp: Date;
-  rewardAmount: string; // in tinybar
+  rewardAmount: string; // in HBAR
   txHash?: string;
 }
 
@@ -109,18 +109,18 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
               verified++;
               // Get reward amount from contract
               const rewardAmount = await contract.rewardAmount();
-              // Convert from wei to tinybar (divide by 10^10)
-              const rewardInTinybar = (Number(rewardAmount) / 10000000000).toString();
-              totalRewardsSum += Number(rewardInTinybar);
+              // Convert from wei to HBAR (divide by 10^18)
+              const rewardInHbar = (Number(rewardAmount) / 1000000000000000000).toString();
+              totalRewardsSum += Number(rewardInHbar);
               
               // Store the current reward amount for display
-              setCurrentRewardAmount(rewardInTinybar);
+              setCurrentRewardAmount(rewardInHbar);
               
               rewardedIncidentsList.push({
                 id: Number(id),
                 description,
                 timestamp: new Date(Number(timestamp) * 1000),
-                rewardAmount: rewardInTinybar
+                rewardAmount: rewardInHbar
               });
             } else {
               pending++;
@@ -182,11 +182,19 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
             </button>
             
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                <Award className="w-8 h-8 text-green-600" />
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Award className="w-8 h-8 text-white" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">My Rewards</h1>
-              <p className="text-gray-600">Track your earnings from verified incidents</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">My Hedera Rewards</h1>
+              <div className="flex items-center justify-center space-x-2 mb-2">
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  Native HBAR Tokens
+                </span>
+                <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                  Hedera Hashgraph
+                </span>
+              </div>
+              <p className="text-gray-600">Earn native Hedera HBAR tokens for verified incident reports</p>
             </div>
 
             <div className="w-24"> {/* Spacer for centering */}</div>
@@ -287,14 +295,19 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                   {/* Total Rewards */}
-                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                  <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg shadow-sm border-2 border-purple-200 p-6">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                        <DollarSign className="w-6 h-6 text-green-600" />
+                      <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full flex items-center justify-center">
+                        <DollarSign className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600">Total Earned</p>
-                        <p className="text-2xl font-bold text-gray-900">{totalRewards} tinybar</p>
+                        <p className="text-sm font-medium text-purple-700">Total Earned</p>
+                        <div className="flex items-center space-x-2">
+                          <p className="text-2xl font-bold text-gray-900">{totalRewards} HBAR</p>
+                          <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-medium">
+                            Native Hedera
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -391,10 +404,12 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
 
                             {incident.verified && (
                               <div className="ml-6 text-right">
-                                <div className="text-lg font-semibold text-green-600">
-                                  +{rewardedIncidents.find(r => r.id === incident.id)?.rewardAmount || '0'} tinybar
+                                <div className="bg-gradient-to-r from-purple-500 to-blue-600 text-white px-3 py-2 rounded-lg">
+                                  <div className="text-lg font-bold">
+                                    +{rewardedIncidents.find(r => r.id === incident.id)?.rewardAmount || '0'} HBAR
+                                  </div>
+                                  <div className="text-xs opacity-90">Native Hedera Token</div>
                                 </div>
-                                <div className="text-sm text-gray-500">Reward Earned</div>
                               </div>
                             )}
                           </div>
@@ -404,20 +419,41 @@ export default function RewardsTracker({ onBack }: RewardsTrackerProps) {
                   )}
                 </div>
 
-                {/* Reward Info */}
-                <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+                {/* Hedera Reward Info */}
+                <div className="mt-8 bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-lg p-6">
                   <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-xs font-bold">i</span>
+                    <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-white text-sm font-bold">ℏ</span>
                     </div>
-                    <div className="text-sm text-blue-800">
-                      <p className="font-medium mb-1">How Rewards Work</p>
-                      <ul className="space-y-1 text-blue-700">
-                        <li>• Report incidents through the incident wizard</li>
-                        <li>• Once verified by administrators, you automatically receive tinybar rewards</li>
-                        <li>• Current reward amount: {currentRewardAmount} tinybar per verified incident</li>
-                        <li>• Rewards are sent directly to your wallet address</li>
-                      </ul>
+                    <div className="text-sm">
+                      <p className="font-bold text-purple-900 mb-2 text-lg">🚀 Powered by Hedera Hashgraph</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <p className="font-semibold text-purple-800 mb-1">Native HBAR Rewards</p>
+                          <ul className="space-y-1 text-purple-700 text-sm">
+                            <li>• Instant payouts in native Hedera HBAR tokens</li>
+                            <li>• Current reward: {currentRewardAmount} HBAR per verified incident</li>
+                            <li>• Low-cost transactions (~$0.0001 USD)</li>
+                            <li>• Carbon-negative blockchain technology</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-purple-800 mb-1">Hedera Advantages</p>
+                          <ul className="space-y-1 text-purple-700 text-sm">
+                            <li>• Lightning-fast finality (3-5 seconds)</li>
+                            <li>• Enterprise-grade security & governance</li>
+                            <li>• Predictable fees with no gas price volatility</li>
+                            <li>• Council of global enterprises ensuring stability</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="mt-4 p-3 bg-white rounded-lg border border-purple-200">
+                        <p className="font-medium text-purple-800 mb-1">💡 Why Hedera for Incident Management?</p>
+                        <p className="text-purple-700 text-sm">
+                          Hedera's hashgraph consensus ensures immutable incident records with fairness, 
+                          speed, and sustainability that traditional blockchains cannot match.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

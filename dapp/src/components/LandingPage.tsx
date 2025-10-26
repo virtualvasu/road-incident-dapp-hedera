@@ -1,4 +1,4 @@
-import { FileText, Shield, Database, Cloud, ArrowRight, BarChart3, Award } from 'lucide-react';
+import { FileText, Shield, ArrowRight, BarChart3, Award } from 'lucide-react';
 
 interface LandingPageProps {
   onReportIncident: () => void;
@@ -13,21 +13,16 @@ export default function LandingPage({ onReportIncident, onViewDashboard, onViewR
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
           <div className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Shield className="w-8 h-8 text-blue-600" />
+            <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <Shield className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Incident Management System
+            <h1 className="text-4xl font-bold text-gray-900 mb-3">
+              Hedera Incident Management
             </h1>
-            <p className="text-gray-600 text-lg mb-3">
-              Professional incident reporting with blockchain verification and decentralized storage
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              A decentralized application for reporting, tracking, and managing road incidents with tamper-proof records on the Hedera network.
+
             </p>
-            <div className="flex items-center justify-center space-x-2">
-              <span className="text-sm text-gray-500">Powered by</span>
-              <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                Hedera
-              </span>
-            </div>
           </div>
         </div>
       </header>
@@ -46,162 +41,143 @@ export default function LandingPage({ onReportIncident, onViewDashboard, onViewR
         {/* Action Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Report New Incident */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FileText className="w-8 h-8 text-red-600" />
+          <div className="bg-white rounded-lg shadow-lg border-2 border-red-200 p-8 hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+            <div className="text-center flex-grow">
+              <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <FileText className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Report New Incident</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Report on Hedera</h3>
               <p className="text-gray-600 mb-6">
-                Create a comprehensive incident report with PDF generation, secure storage, and blockchain verification.
+                Create tamper-proof incident reports secured by Hedera's hashgraph consensus and earn HBAR rewards.
               </p>
 
               {/* Features */}
               <div className="space-y-3 mb-8 text-left">
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Professional PDF report generation</span>
+                  <div className="w-2 h-2 bg-gradient-to-r from-red-500 to-pink-600 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Immutable Hedera blockchain storage</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Secure IPFS storage via Storacha</span>
+                  <div className="w-2 h-2 bg-gradient-to-r from-red-500 to-pink-600 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Earn HBAR tokens for verified reports</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Blockchain verification and timestamping</span>
+                  <div className="w-2 h-2 bg-gradient-to-r from-red-500 to-pink-600 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Enterprise-grade PDF generation</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Photo evidence attachment support</span>
+                  <div className="w-2 h-2 bg-gradient-to-r from-red-500 to-pink-600 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Lightning-fast 3-5s finality</span>
                 </div>
               </div>
-
-              <button
-                onClick={onReportIncident}
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-4 px-6 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-red-300 flex items-center justify-center space-x-2"
-              >
-                <span>Report New Incident</span>
-                <ArrowRight className="w-5 h-5" />
-              </button>
             </div>
+
+            <button
+              onClick={onReportIncident}
+              className="w-full bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 focus:ring-4 focus:ring-red-300 flex items-center justify-center space-x-2 mt-auto"
+            >
+              <span>Start Hedera Report</span>
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
 
           {/* View Dashboard */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BarChart3 className="w-8 h-8 text-green-600" />
+          <div className="bg-white rounded-lg shadow-lg border-2 border-green-200 p-8 hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+            <div className="text-center flex-grow">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <BarChart3 className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Incident Dashboard</h3>
               <p className="text-gray-600 mb-6">
-                View the latest 10 incidents and search through all reported incidents with comprehensive details.
+                Explore incidents stored immutably on Hedera Hashgraph with lightning-fast query capabilities.
               </p>
 
               {/* Features */}
               <div className="space-y-3 mb-8 text-left">
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Latest 10 incidents overview</span>
+                  <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-teal-600 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Real-time Hedera network data</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Quick search by incident ID</span>
+                  <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-teal-600 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Instant search with hashgraph speed</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Verification status tracking</span>
+                  <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-teal-600 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Immutable verification status</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                  <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-teal-600 rounded-full"></div>
                   <span className="text-sm text-gray-700">Real-time blockchain updates</span>
                 </div>
               </div>
+            </div>
 
-              <button
+            <button
                 onClick={onViewDashboard}
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-green-300 flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 focus:ring-4 focus:ring-green-300 flex items-center justify-center space-x-2 mt-auto"
               >
-                <span>View Dashboard</span>
+                <span>Explore Hedera Dashboard</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
-            </div>
           </div>
 
-          {/* View My Rewards */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Award className="w-8 h-8 text-blue-600" />
+          {/* View My Hedera Rewards */}
+          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg shadow-lg border-2 border-purple-200 p-8 hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+            <div className="text-center flex-grow">
+              <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <Award className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">My Rewards</h3>
-              <p className="text-gray-600 mb-6">
-                Connect your wallet to view your earnings from verified incident reports and track your rewards.
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">My Hedera Rewards</h3>
+              <div className="flex items-center justify-center space-x-2 mb-4">
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  Native HBAR Tokens
+                </span>
+              </div>
+              <p className="text-gray-700 mb-6">
+                Track your native HBAR earnings from verified incident reports on the Hedera network
               </p>
 
-              {/* Features */}
-              <div className="space-y-3 mb-8 text-left">
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Total tinybar rewards earned</span>
+              {/* Enhanced Features */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-left">
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full"></div>
+                    <span className="text-sm text-gray-700 font-medium">Native HBAR token rewards</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full"></div>
+                    <span className="text-sm text-gray-700 font-medium">Instant finality (3-5 seconds)</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full"></div>
+                    <span className="text-sm text-gray-700 font-medium">Predictable low fees (~$0.0001)</span>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Verified vs pending incidents</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Detailed earnings breakdown</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Real-time reward tracking</span>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full"></div>
+                    <span className="text-sm text-gray-700 font-medium">Carbon-negative transactions</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full"></div>
+                    <span className="text-sm text-gray-700 font-medium">Enterprise-grade security</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full"></div>
+                    <span className="text-sm text-gray-700 font-medium">Real-time reward tracking</span>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <button
-                onClick={onViewRewards}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 focus:ring-4 focus:ring-blue-300 flex items-center justify-center space-x-2"
-              >
-                <span>View My Rewards</span>
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* System Features */}
-        <div className="mt-16 bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-          <h3 className="text-lg font-bold text-gray-900 text-center mb-6">
-            Why Use Our Incident Management System?
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Database className="w-6 h-6 text-purple-600" />
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Immutable Records</h4>
-              <p className="text-sm text-gray-600">
-                All incidents are permanently recorded on the blockchain, ensuring they cannot be tampered with or lost.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Cloud className="w-6 h-6 text-green-600" />
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Decentralized Storage</h4>
-              <p className="text-sm text-gray-600">
-                Reports are stored on IPFS through Storacha, ensuring global accessibility and redundancy.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Shield className="w-6 h-6 text-indigo-600" />
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Cryptographic Proof</h4>
-              <p className="text-sm text-gray-600">
-                Every report includes cryptographic timestamps and signatures for legal admissibility.
-              </p>
-            </div>
+            <button
+              onClick={onViewRewards}
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 focus:ring-4 focus:ring-purple-300 flex items-center justify-center space-x-2 mt-auto"
+            >
+              <span>View My Hedera Rewards</span>
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </main>
