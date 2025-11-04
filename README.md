@@ -1,199 +1,165 @@
-# Road Incident DApp on Hedera
+<p align="center">
+    <img src="dapp/public/logo.png" alt="SafeRoads Hedera Logo" width="90" height="90" />
+</p>
 
-A comprehensive decentralized application for reporting, verifying, and managing road incidents built on the Hedera network. This system enables citizens to report incidents with blockchain immutability, professional PDF documentation, decentralized storage, and a reward mechanism for verified reports.
+# SafeRoads Hedera
 
-## 🌟 Overview
+## Table of Contents
 
-This project consists of three main components:
-1. **Citizen Reporter Interface** - For reporting new incidents
-2. **Incident Verification Dashboard** - For authorities to verify and reward reports  
-3. **Smart Contract System** - Managing incidents and rewards on Hedera blockchain
+- [Problem](#problem)
+- [Solution](#solution)
+- [Deployment & Demo](#deployment--demo)
+- [Smart Contracts on Hedera Testnet](#smart-contracts-on-hedera-testnet)
+- [Key Features](#key-features)
+- [Getting Started](#getting-started)
 
-## 🏗️ Architecture
+> Turning "why should I report?" into "heck yes, I'll report!" — powered by Hedera Hashgraph
 
+SafeRoads Hedera is a decentralized platform built on **Hedera Hashgraph** that rewards citizens for reporting real road incidents — potholes, accidents, or other road hazards — and stores them **on-chain for transparency**.  
+Once verified, reporters earn **HBAR tokens** for their contribution to safer cities.
+
+## Problem
+
+In busy metro cities like **New Delhi**, road issues are everywhere — but no one reports them.  
+People don't have time, there's no incentive, and existing systems lack transparency.  
+As a result, governments don't get reliable data, and citizens stop caring.
+
+---
+
+## Solution
+
+SafeRoads Hedera makes civic participation **rewarding and verifiable**.
+
+- Citizens report road incidents through a simple **dApp** (location + image + description).  
+- Reports are recorded on the **Hedera blockchain**, ensuring public visibility and immutability.  
+- Verified reports earn **HBAR token rewards**.  
+- Lightning-fast finality (3-5 seconds) and predictable low fees ($0.0001 USD).
+
+---
+
+## Deployment & Demo
+
+- **Deployment link of main dapp:**  
+    [Coming Soon - Hedera Deployment]
+
+- **Demo screencasts of the dapp:**  
+    [Demo Links Coming Soon]
+
+---
+
+## Smart Contracts on Hedera Testnet
+
+SafeRoads Hedera uses two main smart contracts, both deployed on the Hedera testnet:
+
+### 1. IncidentContract
+- **Block Explorer:** [Deployed on Hedera Testnet]
+- **Purpose:** This is the main contract for the dApp. It manages the full lifecycle of incident reporting: accepting new reports, storing incident data, keeping a record of reporters, and distributing HBAR rewards to verified users. All actions are recorded on-chain for transparency and auditability with Hedera's hashgraph consensus providing fast finality.
+
+### 2. PPTToken (HTS Compatible)
+- **Block Explorer:** [Deployed on Hedera Testnet]
+- **Purpose:** ERC-20 compatible reward token that integrates with Hedera Token Service (HTS). This token incentivizes quality incident reports and community participation. The token can be earned through verified incident reports and used within the SafeRoads ecosystem.
+
+---
+
+## Key Features
+
+### ⚡ Hedera Hashgraph Benefits
+- **Fast Finality**: 3-5 second transaction finality with hashgraph consensus
+- **Low Cost**: Predictable $0.0001 USD transaction fees for all operations  
+- **Carbon Negative**: Built on the most energy-efficient public ledger technology
+- **High Throughput**: Capable of handling thousands of incident reports per second
+
+### 🏗️ Three-Component Architecture
+1. **Citizen Reporter Interface** (`/dapp`) - For reporting new incidents
+2. **Incident Verification Dashboard** (`/incident-verification`) - For authorities to verify and reward reports  
+3. **Smart Contract System** (`/contracts`) - Managing incidents and rewards on Hedera blockchain
+
+### 📱 User Experience
+- **Wallet Integration** - Connect MetaMask or HashPack to Hedera testnet
+- **Incident Wizard** - Step-by-step guided reporting process
+- **PDF Generation** - Professional incident reports with embedded metadata
+- **IPFS Storage** - Decentralized document storage via Storacha
+- **Real-time Dashboard** - Track incident status and earnings
+- **Authority Portal** - Streamlined verification interface for officials
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- Foundry/Forge for smart contracts
+- MetaMask or HashPack wallet configured for Hedera testnet
+- Storacha account for IPFS storage
+
+### Quick Setup
+
+```bash
+# Clone the repo
+git clone https://github.com/virtualvasu/road-incident-dapp-hedera.git
+cd road-incident-dapp-hedera
+
+# Deploy smart contracts
+cd contracts
+forge build
+forge script script/Deploy.s.sol --rpc-url https://testnet.hashio.io/api --broadcast
+
+# Install and run citizen dapp
+cd ../dapp
+npm install
+npm run dev
+# Opens at http://localhost:5173
+
+# Install and run verification portal
+cd ../incident-verification
+npm install  
+npm run dev
+# Opens at http://localhost:5174
 ```
-├── contracts/                    # Smart contracts (Foundry/Solidity)
-│   ├── src/IncidentContract.sol  # Main incident management contract
-│   └── script/                   # Deployment and interaction scripts
-├── dapp/                         # Citizen reporting interface (React)
-│   └── src/components/          # Landing page, incident wizard, dashboard
-└── incident-verification/       # Authority verification interface (React)
-    └── src/components/          # Verification dashboard for officials
-```
 
-## ✨ Key Features
+### Hedera Testnet Configuration
+Add Hedera testnet to your wallet:
+- **Network Name**: Hedera Testnet
+- **RPC URL**: `https://testnet.hashio.io/api`
+- **Chain ID**: 296
+- **Currency Symbol**: HBAR
+- **Block Explorer**: `https://hashscan.io/testnet`
 
-### For Citizens (Reporter Interface)
-- **🔗 Wallet Integration** - Connect MetaMask to start reporting immediately
-- **📋 Incident Wizard** - Step-by-step guided incident reporting process
-- **📄 PDF Generation** - Professional incident reports with embedded metadata
-- **☁️ IPFS Storage** - Decentralized document storage via Web3.Storage
-- **📊 Dashboard** - Track your reported incidents and their status
-- **💰 Rewards Tracker** - Monitor earnings from verified incident reports
+---
 
-### For Authorities (Verification Interface)
-- **🔐 Owner-Only Access** - Restricted verification capabilities for authorized personnel
-- **📈 Incident Overview** - Complete dashboard of all reported incidents
-- **✅ Verification System** - Mark incidents as verified with blockchain confirmation
-- **💸 Automated Rewards** - Automatic payment distribution to reporters
-- **🔍 Detailed Review** - Access full incident details and documentation
-
-### Smart Contract Features
-- **🏪 Incident Storage** - Immutable on-chain incident records
-- **👑 Access Control** - Owner-based verification and reward management
-- **💎 Reward Mechanism** - Configurable HBAR rewards for verified reports
-- **🕐 Timestamp Tracking** - Blockchain-verified incident timing
-- **🔢 ID Management** - Sequential incident numbering and retrieval
-
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Blockchain**: Hedera Hashgraph (Testnet)
 - **Smart Contracts**: Solidity ^0.8.28 with Foundry
 - **Frontend**: React 19 + TypeScript + Vite
 - **Styling**: Tailwind CSS 4.1
 - **Web3**: Ethers.js 6.14 for blockchain interaction
-- **Storage**: IPFS via Web3.Storage (@web3-storage/w3up-client)
-- **PDF**: pdf-lib for document generation
+- **Storage**: IPFS via Storacha (@web3-storage/w3up-client)
+- **PDF Generation**: pdf-lib for document creation
 - **Icons**: Lucide React
 
-## 🚀 Quick Start
+---
 
-### Prerequisites
-- Node.js 18+
-- Foundry/Forge
-- MetaMask wallet
-- Web3.Storage account (for IPFS)
+## User Workflows
 
-### 1. Clone & Install
-```bash
-git clone https://github.com/virtualvasu/road-incident-dapp-hedera.git
-cd road-incident-dapp-hedera
-
-# Install contract dependencies
-cd contracts && npm install
-
-# Install dapp dependencies  
-cd ../dapp && npm install
-
-# Install verification app dependencies
-cd ../incident-verification && npm install
-```
-
-### 2. Deploy Smart Contract
-```bash
-cd contracts
-forge build
-# Deploy to Hedera testnet
-./script/deploy-incident-manager.sh
-```
-
-### 3. Launch Applications
-
-**Citizen Reporter Interface:**
-```bash
-cd dapp
-npm run dev
-# Opens at http://localhost:5173
-```
-
-**Authority Verification Dashboard:**
-```bash
-cd incident-verification  
-npm run dev
-# Opens at http://localhost:5174
-```
-
-## 📱 User Workflows
-
-### Citizen Reporting Flow
-1. **Connect Wallet** - Link MetaMask to Hedera testnet
+### 👥 Citizen Reporting Flow
+1. **Connect Wallet** - Link MetaMask/HashPack to Hedera testnet
 2. **Report Incident** - Fill out incident details, location, photos
-3. **Generate PDF** - System creates professional incident documentation
+3. **Generate Documentation** - System creates professional incident reports
 4. **IPFS Upload** - Documents stored on decentralized storage
-5. **Blockchain Record** - Incident hash submitted to smart contract
-6. **Track Status** - Monitor verification status and potential rewards
+5. **Blockchain Record** - Incident submitted to Hedera smart contract (3-5 sec finality)
+6. **Track & Earn** - Monitor verification status and earn HBAR rewards
 
-### Authority Verification Flow
+### 🏛️ Authority Verification Flow
 1. **Owner Access** - Connect as contract owner/authorized verifier
-2. **Review Queue** - Browse all unverified incident reports
-3. **Incident Analysis** - Review details, documentation, and evidence
+2. **Review Dashboard** - Browse all unverified incident reports
+3. **Evidence Analysis** - Review details, documentation, and proof
 4. **Verification Decision** - Mark legitimate incidents as verified
-5. **Automatic Rewards** - System pays HBAR rewards to reporters
+5. **Automatic Rewards** - System distributes HBAR rewards to reporters
 
-## 📄 Smart Contract Details
+---
 
-### IncidentManager Contract
-- **Address**: `0xf12ead27305b91a03afbb413a2ed2f028e4c9e6b` (Hedera Testnet)
-- **Default Reward**: 0.05 HBAR per verified incident
-- **Key Functions**:
-  - `reportIncident(string description)` - Submit new incident
-  - `verifyIncident(uint id)` - Verify incident (owner only)
-  - `getIncident(uint id)` - Retrieve incident details
-  - `setRewardAmount(uint256 amount)` - Update reward value
-
-### Events
-- `IncidentReported` - New incident submitted
-- `IncidentVerified` - Incident verified by authority
-- `RewardPaid` - HBAR reward distributed to reporter
-
-## 🔗 Network Configuration
-
-**Hedera Testnet**
-- Chain ID: 296
-- RPC URL: `https://testnet.hashio.io/api`
-- Explorer: https://hashscan.io/testnet
-- Native Token: HBAR
-
-## 🏆 Benefits & Use Cases
-
-### For Citizens
-- **Civic Engagement** - Easy way to report road hazards and incidents
-- **Financial Incentive** - Earn HBAR for verified reports
-- **Professional Documentation** - Court-admissible incident reports
-- **Transparency** - Track report status on blockchain
-
-### For Authorities
-- **Crowd-Sourced Reporting** - Leverage citizen network for incident monitoring
-- **Data Integrity** - Immutable blockchain records prevent tampering
-- **Efficient Processing** - Streamlined verification and reward system
-- **Cost Effective** - Automated reward distribution reduces administrative overhead
-
-### For Society
-- **Road Safety** - Faster identification and response to road hazards
-- **Data Collection** - Valuable traffic incident data for urban planning
-- **Decentralization** - No single point of failure or control
-- **Innovation** - Demonstrates practical blockchain application for civic good
-
-## 🔧 Development
-
-### Contract Development
-```bash
-cd contracts
-forge test                    # Run tests
-forge build                   # Compile contracts
-forge coverage               # Test coverage report
-```
-
-### Frontend Development
-```bash
-# Reporter interface
-cd dapp && npm run dev
-
-# Verification interface  
-cd incident-verification && npm run dev
-```
-
-### Linting & Formatting
-```bash
-cd contracts
-npm run lint                 # Solidity linting
-npm run prettier:write       # Format code
-
-cd dapp
-npm run lint                 # TypeScript linting
-```
-
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create feature branch (`git checkout -b feature/amazing-feature`)
@@ -201,27 +167,12 @@ npm run lint                 # TypeScript linting
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open Pull Request
 
-## 📋 Roadmap
+---
 
-- [ ] Mobile-responsive design improvements
-- [ ] Multi-language support
-- [ ] Photo/video evidence handling
-- [ ] GPS location integration
-- [ ] Incident categorization system
-- [ ] Advanced analytics dashboard
-- [ ] Integration with emergency services
-- [ ] Mainnet deployment
-
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙋‍♂️ Support
-
-For questions, issues, or contributions:
-- Create an issue on GitHub
-- Contact: [virtualvasu](https://github.com/virtualvasu)
-
 ---
 
-*Built with ❤️ for safer roads using Hedera blockchain technology*
+*Built with ⚡ on Hedera Hashgraph for safer roads*

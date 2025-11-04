@@ -1,13 +1,14 @@
 import { useState } from 'react';
+import ProjectIntroPage from './ProjectIntroPage';
 import LandingPage from './LandingPage';
 import IncidentWizard from './IncidentWizard';
 import IncidentDashboard from './IncidentDashboard';
 import RewardsTracker from './RewardsTracker';
 
-type AppMode = 'landing' | 'report' | 'dashboard' | 'rewards';
+type AppMode = 'intro' | 'landing' | 'report' | 'dashboard' | 'rewards';
 
 export default function IncidentManager() {
-  const [currentMode, setCurrentMode] = useState<AppMode>('landing');
+  const [currentMode, setCurrentMode] = useState<AppMode>('intro');
 
   const handleModeChange = (mode: AppMode) => {
     setCurrentMode(mode);
@@ -15,6 +16,12 @@ export default function IncidentManager() {
 
   const renderCurrentView = () => {
     switch (currentMode) {
+      case 'intro':
+        return (
+          <ProjectIntroPage
+            onContinue={() => handleModeChange('landing')}
+          />
+        );
       case 'landing':
         return (
           <LandingPage
